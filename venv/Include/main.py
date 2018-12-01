@@ -29,9 +29,9 @@ halfOfScreenHeight = WINDOWHEIGHT / 2  # half of the screen's height (resolution
 bottomRightWidth = WINDOWWIDTH * 0.8  # relative position of the "click..." box
 bottomRightHeight = WINDOWHEIGHT * 0.8  # relative position of the "click..." box
 
-
 gameButtonHeight = WINDOWHEIGHT / 20 # height of the button in the main menu
 gameButtonWidth = WINDOWWIDTH / 5    # width of the button in the main menu
+xButtonCoordinateCenterScreen = halfOfScreenWidth-gameButtonWidth/2 # coordinate to center buttons in main menu
 
 
 # colours                           (R   G    B) -------------------------------------------------------------------------------
@@ -84,10 +84,10 @@ def gameMainMenu(): # main menu and settings
 
         DISPLAYSURF.fill(TITLESCREENCOLOUR)
 
-        onScreenButton('New',halfOfScreenWidth, topMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None) # calls the button function - newa game
-        onScreenButton('Load', halfOfScreenWidth, secondMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - load game
-        onScreenButton('Save', halfOfScreenWidth, thirdMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - save game
-        onScreenButton('Quit', halfOfScreenWidth, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - quit
+        onScreenButton('New',  xButtonCoordinateCenterScreen, topMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None) # calls the button function - newa game
+        onScreenButton('Load', xButtonCoordinateCenterScreen, secondMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - load game
+        onScreenButton('Save', xButtonCoordinateCenterScreen, thirdMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - save game
+        onScreenButton('Quit', xButtonCoordinateCenterScreen, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - quit
         onScreenButton('[FS]', bottomRightWidth, bottomRightHeight, gameButtonWidth/4, gameButtonHeight*1.4, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - go to full screen
 
         pygame.display.update()
@@ -106,7 +106,7 @@ def onScreenButton(textOnButton, xButtonCoordinate, yButtonCoordinate, buttonWid
 
     buttonText = gameMenuFont.render(textOnButton, True, BLACK, None) # creates a text object
     buttonPosition = buttonText.get_rect()                            # creates a rect
-    buttonPosition.center = (((xButtonCoordinate)+(buttonWidth*2)), ((yButtonCoordinate)+(buttonHeight/2)))  # centers the rect
+    buttonPosition.center = (((xButtonCoordinate)+(buttonWidth/2)), ((yButtonCoordinate)+(buttonHeight/2)))  # centers the rect
     #buttonPosition.center = (xButtonCoordinate, yButtonCoordinate)
     DISPLAYSURF.blit(buttonText, buttonPosition)   # blits the object
 
