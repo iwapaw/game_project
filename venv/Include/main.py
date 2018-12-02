@@ -87,19 +87,21 @@ def gameMainMenu(): # main menu and settings
         onScreenButton('New',  xButtonCoordinateCenterScreen, topMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None) # calls the button function - newa game
         onScreenButton('Load', xButtonCoordinateCenterScreen, secondMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - load game
         onScreenButton('Save', xButtonCoordinateCenterScreen, thirdMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - save game
-        onScreenButton('Quit', xButtonCoordinateCenterScreen, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - quit
-        onScreenButton('[FS]', bottomRightWidth, bottomRightHeight, gameButtonWidth/4, gameButtonHeight*1.4, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - go to full screen
+        onScreenButton('Quit', xButtonCoordinateCenterScreen, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, quitQame)  # calls the button function - quit
+        onScreenButton('[FS]', bottomRightWidth, bottomRightHeight, gameButtonWidth/4, gameButtonHeight*1.4, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, toggleFullScreen)  # calls the button function - go to full screen
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
 
 def onScreenButton(textOnButton, xButtonCoordinate, yButtonCoordinate, buttonWidth, buttonHeight, initialColour, secondColour, fontUsedForButton, actionInvokedByButton=None):
+    mouseClicked = pygame.mouse.get_pressed()  # variable to store mouse clicks
+    mousePosition = pygame.mouse.get_pos()  # variable to store mouse position
     if xButtonCoordinate + buttonWidth > mousePosition[0] > xButtonCoordinate and yButtonCoordinate + buttonHeight > mousePosition[1] > yButtonCoordinate: # if the cursor is within the box
         pygame.draw.rect(DISPLAYSURF, secondColour, (xButtonCoordinate,yButtonCoordinate,buttonWidth,buttonHeight))                                        # highlights the button with a brighter colour
 
         if mouseClicked[0] == 1 and actionInvokedByButton != None:    # if the button is clicked
-                actionInvokedByButton()                               # go to the function passed to onScreenButton
+                actionInvokedByButton()                               # go to the function passed to onScreenButton witb actionInvokedByButton
 
     else:                                                                                                                   # if the cursor is outside the button
         pygame.draw.rect(DISPLAYSURF, initialColour, (xButtonCoordinate,yButtonCoordinate,buttonWidth, buttonHeight))       # blits a darker colour
@@ -107,8 +109,14 @@ def onScreenButton(textOnButton, xButtonCoordinate, yButtonCoordinate, buttonWid
     buttonText = gameMenuFont.render(textOnButton, True, BLACK, None) # creates a text object
     buttonPosition = buttonText.get_rect()                            # creates a rect
     buttonPosition.center = (((xButtonCoordinate)+(buttonWidth/2)), ((yButtonCoordinate)+(buttonHeight/2)))  # centers the rect
-    #buttonPosition.center = (xButtonCoordinate, yButtonCoordinate)
     DISPLAYSURF.blit(buttonText, buttonPosition)   # blits the object
+
+def quitQame(): # function quits the game
+    pygame.quit()
+    sys.exit()
+
+def toggleFullScreen(): # function goes full screen
+    DISPLAYSURF = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
 
 
 def main ():
@@ -126,6 +134,6 @@ def main ():
 
 
 gameIntro(gameMainMenu)
-gameMainMenu()
+#gameMainMenu()
 main()
 
