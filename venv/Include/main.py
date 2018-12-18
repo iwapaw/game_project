@@ -84,7 +84,7 @@ def gameMainMenu(): # main menu and settings
 
         DISPLAYSURF.fill(TITLESCREENCOLOUR)
 
-        onScreenButton('New',  xButtonCoordinateCenterScreen, topMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None) # calls the button function - newa game
+        onScreenButton('New',  xButtonCoordinateCenterScreen, topMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, gameWindowMain) # calls the button function - newa game
         onScreenButton('Load', xButtonCoordinateCenterScreen, secondMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - load game
         onScreenButton('Save', xButtonCoordinateCenterScreen, thirdMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - save game
         onScreenButton('Quit', xButtonCoordinateCenterScreen, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, quitQame)  # calls the button function - quit
@@ -110,6 +110,49 @@ def onScreenButton(textOnButton, xButtonCoordinate, yButtonCoordinate, buttonWid
     buttonPosition = buttonText.get_rect()                            # creates a rect
     buttonPosition.center = (((xButtonCoordinate)+(buttonWidth/2)), ((yButtonCoordinate)+(buttonHeight/2)))  # centers the rect
     DISPLAYSURF.blit(buttonText, buttonPosition)   # blits the object
+
+
+
+
+# -------------------------------------------- working on the main game window ------------------------------------------------------------------------------
+def gameWindowMain(): # function to blit the game flow
+    gameRunning = True # variable the controls the game flow
+
+    while gameRunning: # game loop running as long as not quit or back to menu
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or (event.type == KEYUP and event.key == K_ESCAPE): # ESC exits
+                pygame.quit()
+                sys.exit()
+
+        mouseClicked = pygame.mouse.get_pressed()  # variable to store mouse clicks
+        mousePosition = pygame.mouse.get_pos()  # variable to store mouse position
+
+        DISPLAYSURF.fill(TITLESCREENCOLOUR)
+
+        # every line can have up to 95 characters
+        # for loop for every line?
+        # line1 = gameMenuFont.render('kjsdkfjkjsdfkjsdkjfskjdfdskjflskflskflskkjsdkfjkjsdfkjsdkjfskjdfdskjflskflskflssadadadasdasdssa', True, GAMETITLECOLOUR,None)  # text box
+        # line1Position = line1.get_rect()  # text box object
+        # line1Position.topleft = (100,50)  # centers the box
+        # DISPLAYSURF.blit(line1, line1Position)  # draws "click..." text
+
+        xLineCoordinate = 100 # position from left to x
+        yLineCoordinate = 50 # posistion from top to y
+        lines = ["string1","string2","string3"] # 95 characters per line
+        for line in lines: # for loop to display consecutive lines
+            line = gameMenuFont.render(line,True,GAMETITLECOLOUR,None) # render a line from "lines" array
+            linePosition = line.get_rect() # creates the object line
+            linePosition.topleft = (xLineCoordinate,yLineCoordinate) # centers the line from topleft to passed x and y
+            DISPLAYSURF.blit(line,linePosition) # blits the game surface
+            yLineCoordinate+=35 # goes to the new line
+
+
+        pygame.display.update()
+        FPSCLOCK.tick(FPS)
+
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 def quitQame(): # function quits the game
     pygame.quit()
