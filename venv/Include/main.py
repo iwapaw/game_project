@@ -33,6 +33,11 @@ gameButtonHeight = WINDOWHEIGHT / 20 # height of the button in the main menu
 gameButtonWidth = WINDOWWIDTH / 5    # width of the button in the main menu
 xButtonCoordinateCenterScreen = halfOfScreenWidth-gameButtonWidth/2 # coordinate to center buttons in main menu
 
+xLeftButtonCoordinateGameWindow =  WINDOWWIDTH * 0.2 # the location of the left button in the game window [X]
+yLeftButtonCoordinateGameWindow = WINDOWHEIGHT * 0.8 # the location of the left button in the game window [Y]
+xRightButtonCoordinateGameWindow = WINDOWWIDTH * 0.6 # the location of the right button in tbe game window [X]
+yRightButtonCoordinateGameWindow = WINDOWHEIGHT * 0.8 # the location of the left button in the game window [Y]
+
 
 # colours                           (R   G    B) -------------------------------------------------------------------------------
 TITLESCREENCOLOUR =                 ( 41,  0,  0)
@@ -138,13 +143,17 @@ def gameWindowMain(): # function to blit the game flow
 
         xLineCoordinate = 100 # position from left to x
         yLineCoordinate = 50 # posistion from top to y
-        lines = ["string1","string2","string3"] # 95 characters per line
+        lines = ["string1","string2","string3", "string4", "string5", "string6", "string7"] # 95 characters per line
         for line in lines: # for loop to display consecutive lines
             line = gameMenuFont.render(line,True,GAMETITLECOLOUR,None) # render a line from "lines" array
             linePosition = line.get_rect() # creates the object line
             linePosition.topleft = (xLineCoordinate,yLineCoordinate) # centers the line from topleft to passed x and y
             DISPLAYSURF.blit(line,linePosition) # blits the game surface
             yLineCoordinate+=35 # goes to the new line
+
+        # each button should have 12 characters
+        onScreenButton ("Left choice", xLeftButtonCoordinateGameWindow,yLeftButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,None) # button for the left choice
+        onScreenButton("Right Choice", xRightButtonCoordinateGameWindow,yRightButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,None) # button for the right choice
 
 
         pygame.display.update()
