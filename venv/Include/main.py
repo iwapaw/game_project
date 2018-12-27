@@ -1,6 +1,12 @@
-import pygame, sys
+import pygame, sys, gameScreenClasses, storyStrings
 from pygame.locals import *
 
+
+# --------------- TO DO ---------------------------
+# -- add a prompt before exiting the game
+# -- add the u"\u2699" Python unicode sign to access the main menu
+# --
+# -------------------------------------------------
 
 
 # global variables and initializations ----------------------------------------------------------------------------------------------------
@@ -32,6 +38,11 @@ bottomRightHeight = WINDOWHEIGHT * 0.8  # relative position of the "click..." bo
 gameButtonHeight = WINDOWHEIGHT / 20 # height of the button in the main menu
 gameButtonWidth = WINDOWWIDTH / 5    # width of the button in the main menu
 xButtonCoordinateCenterScreen = halfOfScreenWidth-gameButtonWidth/2 # coordinate to center buttons in main menu
+
+xLeftButtonCoordinateGameWindow =  WINDOWWIDTH * 0.2 # the location of the left button in the game window [X]
+yLeftButtonCoordinateGameWindow = WINDOWHEIGHT * 0.8 # the location of the left button in the game window [Y]
+xRightButtonCoordinateGameWindow = WINDOWWIDTH * 0.6 # the location of the right button in tbe game window [X]
+yRightButtonCoordinateGameWindow = WINDOWHEIGHT * 0.8 # the location of the left button in the game window [Y]
 
 
 # colours                           (R   G    B) -------------------------------------------------------------------------------
@@ -129,22 +140,21 @@ def gameWindowMain(): # function to blit the game flow
 
         DISPLAYSURF.fill(TITLESCREENCOLOUR)
 
-        # every line can have up to 95 characters
-        # for loop for every line?
-        # line1 = gameMenuFont.render('kjsdkfjkjsdfkjsdkjfskjdfdskjflskflskflskkjsdkfjkjsdfkjsdkjfskjdfdskjflskflskflssadadadasdasdssa', True, GAMETITLECOLOUR,None)  # text box
-        # line1Position = line1.get_rect()  # text box object
-        # line1Position.topleft = (100,50)  # centers the box
-        # DISPLAYSURF.blit(line1, line1Position)  # draws "click..." text
-
+        # strings to display are passed from gameScreenClasses file
         xLineCoordinate = 100 # position from left to x
         yLineCoordinate = 50 # posistion from top to y
-        lines = ["string1","string2","string3"] # 95 characters per line
+        lines = [gameScreenClasses.currentScreen.string0,gameScreenClasses.currentScreen.string1, gameScreenClasses.currentScreen.string2, gameScreenClasses.currentScreen.string3, gameScreenClasses.currentScreen.string4, gameScreenClasses.currentScreen.string5, gameScreenClasses.currentScreen.string6] # 95 characters per line
         for line in lines: # for loop to display consecutive lines
             line = gameMenuFont.render(line,True,GAMETITLECOLOUR,None) # render a line from "lines" array
             linePosition = line.get_rect() # creates the object line
             linePosition.topleft = (xLineCoordinate,yLineCoordinate) # centers the line from topleft to passed x and y
             DISPLAYSURF.blit(line,linePosition) # blits the game surface
             yLineCoordinate+=35 # goes to the new line
+
+        # each button should have 12 characters
+        # choices on buttons are passed from gameScreenClasses file
+        onScreenButton (gameScreenClasses.currentScreen.left, xLeftButtonCoordinateGameWindow,yLeftButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,None) # button for the left choice
+        onScreenButton(gameScreenClasses.currentScreen.right, xRightButtonCoordinateGameWindow,yRightButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,None) # button for the right choice
 
 
         pygame.display.update()
