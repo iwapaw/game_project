@@ -8,7 +8,7 @@ gameScreenStringDictionary = {'string0': '', 'string1': '','string2': '','string
                               'string6': ''}
 # ---------------------------------------------------------------------------------------------------------------------
 
-
+#
 # --------------------------------------------------------------------------------------------------------------------
 # -------- a rejected function ---------------------------------------------------------------------------------------
 # def stringChopper (stringToChop): # a function that slices the string into string displayed on one of the seven lines
@@ -47,8 +47,8 @@ def stringChopper (stringToChop): # a function that slices the string into strin
 # ------------------ strings source: https://en.wikipedia.org/wiki/Iliad
 #testString = "Although the story covers only a few weeks in the final year of the war, the Iliad mentions or alludes to many of the Greek legends about the siege; the earlier events, such as the gathering of warriors for the siege, the cause of the war, and related concerns tend to appear near the beginning. Then the epic narrative takes up events prophesied for the future, such as Achilles' imminent death and the fall of Troy, although the narrative ends before these events take place. However, as these events are prefigured and alluded to more and more vividly, when it reaches an end the poem has told a more or less complete tale of the Trojan War."  # a test run
 #testString = "After nine days of plague, Achilles, the leader of the Myrmidon contingent, calls an assembly to deal with the problem. Under pressure, Agamemnon agrees to return Chryseis to her father, but decides to take Achilles' captive, Brisēís, as compensation. Angered, Achilles declares that he and his men will no longer fight for Agamemnon and will go home. Odysseus takes a ship and returns Chryseis to her father, whereupon Apollo ends the plague."
-#testString = " Achilles relents and lends Patroclus his armor, but sends him off with a stern admonition not to pursue the Trojans, lest he take Achilles' glory. Patroclus leads the Myrmidons into battle and arrives as the Trojans set fire to the first ships. The Trojans are routed by the sudden onslaught, and Patroclus begins his assault by killing Zeus's son Sarpedon, a leading ally of the Trojans. Patroclus, ignoring Achilles' command, pursues and reaches the gates of Troy, where Apollo himself stops him. Patroclus is set upon by Apollo and Euphorbos, and is finally killed by Hector. "
-#stringChopper(testString)
+testString = " Achilles relents and lends Patroclus his armor, but sends him off with a stern admonition not to pursue the Trojans, lest he take Achilles' glory. Patroclus leads the Myrmidons into battle and arrives as the Trojans set fire to the first ships. The Trojans are routed by the sudden onslaught, and Patroclus begins his assault by killing Zeus's son Sarpedon, a leading ally of the Trojans. Patroclus, ignoring Achilles' command, pursues and reaches the gates of Troy, where Apollo himself stops him. Patroclus is set upon by Apollo and Euphorbos, and is finally killed by Hector. "
+stringChopper(testString)
 #-----------------------------------------------------------------------------------------------------------
 
 
@@ -56,7 +56,7 @@ def stringChopper (stringToChop): # a function that slices the string into strin
 
 # -----------------------------------------------------------------------------------------------------------
 # passing the chopped strings to the main class
-string0 = gameScreenStringDictionary['string0']
+string0 = gameScreenStringDictionary['string0']                # should the dictionary be cleaned before next screen?
 string1 = gameScreenStringDictionary['string1']
 string2 = gameScreenStringDictionary['string2']
 string3 = gameScreenStringDictionary['string3']
