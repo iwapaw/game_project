@@ -3,9 +3,9 @@ from pygame.locals import *
 
 
 # --------------- TO DO ---------------------------
-# -- add a prompt before exiting the game
-# -- add the u"\u2699" Python unicode sign to access the main menu
-# --
+# -- add the information button [i] in the main menu
+# -- add a save feature
+#---------- use the save feature to add functionality to the gear icon?
 # -------------------------------------------------
 
 
@@ -17,12 +17,14 @@ pygame.init()  # initialize
 DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT)) # resolution
 pygame.display.set_caption('Into the Elysium') # windows title
 FPSCLOCK = pygame.time.Clock() # initialize the frame counter
+gearIconInUnicode = u"\u2699" # unicode for gear character
 
 mouseClicked = pygame.mouse.get_pressed()  # variable to store mouse clicks
 mousePosition = pygame.mouse.get_pos()     # variable to store mouse position
 
 gameMenuFont = pygame.font.Font("fonts\specialelite.ttf", 20)  # font used for menu and settings
 titleScreenFont = pygame.font.Font("fonts\changa.ttf", 60)  # font used for the game title
+gearIconFont = pygame.font.Font ("fonts\dejavu.ttf",80)
 
 topMenuButtonHeight = WINDOWHEIGHT * 0.3 # for the first button in the main menu
 secondMenuButtonHeight = WINDOWHEIGHT * 0.4 # for the second button in the main menu
@@ -38,11 +40,16 @@ bottomRightHeight = WINDOWHEIGHT * 0.8  # relative position of the "click..." bo
 gameButtonHeight = WINDOWHEIGHT / 20 # height of the button in the main menu
 gameButtonWidth = WINDOWWIDTH / 5    # width of the button in the main menu
 xButtonCoordinateCenterScreen = halfOfScreenWidth-gameButtonWidth/2 # coordinate to center buttons in main menu
+gearButtonHeight =  WINDOWHEIGHT / 10
+gearButtonWidth = WINDOWWIDTH / 20
 
 xLeftButtonCoordinateGameWindow =  WINDOWWIDTH * 0.2 # the location of the left button in the game window [X]
 yLeftButtonCoordinateGameWindow = WINDOWHEIGHT * 0.8 # the location of the left button in the game window [Y]
 xRightButtonCoordinateGameWindow = WINDOWWIDTH * 0.6 # the location of the right button in tbe game window [X]
 yRightButtonCoordinateGameWindow = WINDOWHEIGHT * 0.8 # the location of the left button in the game window [Y]
+
+xGearButtonCoordinateGameWindow = halfOfScreenWidth-gearButtonWidth/2 # coordinate to center the gear in main menu
+yGearButtonCoordinateGameWindow = WINDOWHEIGHT * 0.8 # the location of the gear button in the game window [Y]
 
 
 # colours                           (R   G    B) -------------------------------------------------------------------------------
@@ -77,6 +84,7 @@ def gameIntro(goToTheMainMenu=None):  # displays title screen
             DISPLAYSURF.blit(pressAnyKey, pressAnyKeyPosition)  # draws "click..." text
 
         if mouseClicked[0] == 1 and goToTheMainMenu != None: # if the button is clicked and the main menu function is passed, it executes the main function
+            pygame.time.delay(100)
             intro = False
             goToTheMainMenu()
 
@@ -98,8 +106,9 @@ def gameMainMenu(): # main menu and settings
         onScreenButton('New',  xButtonCoordinateCenterScreen, topMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, gameWindowMain) # calls the button function - newa game
         onScreenButton('Load', xButtonCoordinateCenterScreen, secondMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - load game
         onScreenButton('Save', xButtonCoordinateCenterScreen, thirdMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - save game
-        onScreenButton('Quit', xButtonCoordinateCenterScreen, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, quitQame)  # calls the button function - quit
+        onScreenButton('Quit', xButtonCoordinateCenterScreen, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, quitQameButton)  # calls the button function - quit
         onScreenButton('[FS]', bottomRightWidth, bottomRightHeight, gameButtonWidth/4, gameButtonHeight*1.4, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, toggleFullScreen)  # calls the button function - go to full screen
+        optionsButtonGear (xGearButtonCoordinateGameWindow, yGearButtonCoordinateGameWindow, gearButtonWidth, gearButtonHeight,GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,None) # shifts between menu and gameplay
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
@@ -123,9 +132,25 @@ def onScreenButton(textOnButton, xButtonCoordinate, yButtonCoordinate, buttonWid
     DISPLAYSURF.blit(buttonText, buttonPosition)   # blits the object
 
 
+# function draws the gear icon
+def optionsButtonGear (xButtonCoordinateGear, yButtonCoordinateGear, gearWidth, gearHeight, initialColour, secondColour, actionInvokedByGear=None):
+    mouseClicked = pygame.mouse.get_pressed()  # variable to store mouse clicks
+    mousePosition = pygame.mouse.get_pos()  # variable to store mouse position
+    if xButtonCoordinateGear + gearWidth > mousePosition[0] > xButtonCoordinateGear and yButtonCoordinateGear + gearHeight > mousePosition[1] > yButtonCoordinateGear: # if the cursor is within the box
+        gearIcon = gearIconFont.render(gearIconInUnicode, True, secondColour, None)  # creates a text object                                                          # highlights the button with a brighter colour
+        gearIconPosition = gearIcon.get_rect()  # creates a rect
+        gearIconPosition.center = (((xButtonCoordinateGear) + (gearWidth / 2)), ((yButtonCoordinateGear) + (gearHeight / 2)))  # centers the rect
+        DISPLAYSURF.blit(gearIcon, gearIconPosition)  # blits the object
+        if mouseClicked[0] == 1 and actionInvokedByGear != None:    # if the button is clicked
+                actionInvokedByGear()                               # go to the function passed to onScreenButton witb actionInvokedByButton
+    else:                                    # if the cursor is outside the button
+        gearIcon = gearIconFont.render(gearIconInUnicode, True, initialColour, None)  # creates a text object
+        gearIconPosition = gearIcon.get_rect()  # creates a rect
+        gearIconPosition.center = (((xButtonCoordinateGear) + (gearWidth / 2)), ((yButtonCoordinateGear) + (gearHeight / 2)))  # centers the rect
+        DISPLAYSURF.blit(gearIcon, gearIconPosition)  # blits the object
 
 
-# -------------------------------------------- working on the main game window ------------------------------------------------------------------------------
+# main game window
 def gameWindowMain(): # function to blit the game flow
     gameRunning = True # variable the controls the game flow
 
@@ -155,16 +180,40 @@ def gameWindowMain(): # function to blit the game flow
         # choices on buttons are passed from gameScreenClasses file
         onScreenButton (gameScreenClasses.currentScreen.left, xLeftButtonCoordinateGameWindow,yLeftButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,None) # button for the left choice
         onScreenButton(gameScreenClasses.currentScreen.right, xRightButtonCoordinateGameWindow,yRightButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,None) # button for the right choice
+        optionsButtonGear (xGearButtonCoordinateGameWindow, yGearButtonCoordinateGameWindow, gearButtonWidth, gearButtonHeight,GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,None) # shifts between menu and gameplay
 
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
+def quitQameButton(): # function quits the game
+    quit = True  # flag to execute the quit screen
 
-# -------------------------------------------------------------------------------------------------------------------------------------------------------------
+    while quit:
+        for event in pygame.event.get(): # esc key quits
+            if event.type == pygame.QUIT or (event.type == KEYUP and event.key == K_ESCAPE):  # ESC exits
+                pygame.quit()
+                sys.exit()
+
+        mouseClicked = pygame.mouse.get_pressed()  # variable to store mouse clicks
+        mousePosition = pygame.mouse.get_pos()  # variable to store mouse position
+
+        DISPLAYSURF.fill(TITLESCREENCOLOUR) # background colour
+        quitGamePrompt = gameMenuFont.render('Would you like to quit the game?', True, GAMETITLECOLOUR,None)  # prompt
+        quitGamePromptPosition = quitGamePrompt.get_rect()  # object to position "click..." box
+        quitGamePromptPosition.center = (halfOfScreenWidth, halfOfScreenHeight/2)  # centers the box
+        DISPLAYSURF.blit(quitGamePrompt, quitGamePromptPosition)  # draws "click..." text
 
 
-def quitQame(): # function quits the game
+        onScreenButton ("Yes", xLeftButtonCoordinateGameWindow,yLeftButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,quitGameAction) # button for the left choice
+        onScreenButton("No", xRightButtonCoordinateGameWindow,yRightButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,gameMainMenu) # button for the right choice
+
+
+        pygame.display.update()  # refreshes the screen
+        FPSCLOCK.tick(FPS)  # frame counter tick
+
+
+def quitGameAction():
     pygame.quit()
     sys.exit()
 
