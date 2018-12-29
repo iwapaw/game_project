@@ -3,8 +3,9 @@ from pygame.locals import *
 
 
 # --------------- TO DO ---------------------------
-# -- add a prompt before exiting the game
 # -- add the information button [i] in the main menu
+# -- add a save feature
+#---------- use the save feature to add functionality to the gear icon?
 # -------------------------------------------------
 
 
@@ -83,6 +84,7 @@ def gameIntro(goToTheMainMenu=None):  # displays title screen
             DISPLAYSURF.blit(pressAnyKey, pressAnyKeyPosition)  # draws "click..." text
 
         if mouseClicked[0] == 1 and goToTheMainMenu != None: # if the button is clicked and the main menu function is passed, it executes the main function
+            pygame.time.delay(100)
             intro = False
             goToTheMainMenu()
 
@@ -104,7 +106,7 @@ def gameMainMenu(): # main menu and settings
         onScreenButton('New',  xButtonCoordinateCenterScreen, topMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, gameWindowMain) # calls the button function - newa game
         onScreenButton('Load', xButtonCoordinateCenterScreen, secondMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - load game
         onScreenButton('Save', xButtonCoordinateCenterScreen, thirdMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - save game
-        onScreenButton('Quit', xButtonCoordinateCenterScreen, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, quitQame)  # calls the button function - quit
+        onScreenButton('Quit', xButtonCoordinateCenterScreen, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, quitQameButton)  # calls the button function - quit
         onScreenButton('[FS]', bottomRightWidth, bottomRightHeight, gameButtonWidth/4, gameButtonHeight*1.4, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, toggleFullScreen)  # calls the button function - go to full screen
         optionsButtonGear (xGearButtonCoordinateGameWindow, yGearButtonCoordinateGameWindow, gearButtonWidth, gearButtonHeight,GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,None) # shifts between menu and gameplay
 
@@ -184,11 +186,34 @@ def gameWindowMain(): # function to blit the game flow
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
+def quitQameButton(): # function quits the game
+    quit = True  # flag to execute the quit screen
 
-# -------------------------------------------------------------------------------------------------------------------------------------------------------------
+    while quit:
+        for event in pygame.event.get(): # esc key quits
+            if event.type == pygame.QUIT or (event.type == KEYUP and event.key == K_ESCAPE):  # ESC exits
+                pygame.quit()
+                sys.exit()
+
+        mouseClicked = pygame.mouse.get_pressed()  # variable to store mouse clicks
+        mousePosition = pygame.mouse.get_pos()  # variable to store mouse position
+
+        DISPLAYSURF.fill(TITLESCREENCOLOUR) # background colour
+        quitGamePrompt = gameMenuFont.render('Would you like to quit the game?', True, GAMETITLECOLOUR,None)  # prompt
+        quitGamePromptPosition = quitGamePrompt.get_rect()  # object to position "click..." box
+        quitGamePromptPosition.center = (halfOfScreenWidth, halfOfScreenHeight/2)  # centers the box
+        DISPLAYSURF.blit(quitGamePrompt, quitGamePromptPosition)  # draws "click..." text
 
 
-def quitQame(): # function quits the game
+        onScreenButton ("Yes", xLeftButtonCoordinateGameWindow,yLeftButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,quitGameAction) # button for the left choice
+        onScreenButton("No", xRightButtonCoordinateGameWindow,yRightButtonCoordinateGameWindow,gameButtonWidth,gameButtonHeight,GAMETITLECOLOUR,GAMETITLECOLOURBRIGHTER,gameMainMenu,gameMainMenu) # button for the right choice
+
+
+        pygame.display.update()  # refreshes the screen
+        FPSCLOCK.tick(FPS)  # frame counter tick
+
+
+def quitGameAction():
     pygame.quit()
     sys.exit()
 
