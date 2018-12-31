@@ -1,11 +1,16 @@
-import pygame, sys, gameScreenClasses, storyStrings
+import pygame, sys, gameScreenClasses, storyStrings, pickle
 from pygame.locals import *
+# -- pickle is a module for serialization: https://docs.python.org/3/library/pickle.html
+# -- storyStrings and gameScreenClasses are parts of the project
 
 
 # --------------- TO DO ---------------------------
-# -- add the information button [i] in the main menu
+# -- add the information button [i] in the main menu and [i] screen after the title card:
+# ---------------------------------- git link
+# ---------------------------------- experimental full screen
+# ---------------------------------- ..............
 # -- add a save feature
-#---------- use the save feature to add functionality to the gear icon?
+# ---------- use the save feature to add functionality to the gear icon?
 # -------------------------------------------------
 
 
