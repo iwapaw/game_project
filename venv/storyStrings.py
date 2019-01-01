@@ -1,4 +1,5 @@
-import textwrap # a regex module used to split the story strings into new lines
+import textwrap, config # a regex module used to split the story strings into new lines
+
 
 # --------------------------------------------------------------------------------------------------------------------
 # --------------- declarations ---------------------------------------------------------------------------------------
@@ -8,27 +9,12 @@ gameScreenStringDictionary = {'string0': '', 'string1': '','string2': '','string
                               'string6': '', 'left': '', 'right': ''}
 # ---------------------------------------------------------------------------------------------------------------------
 
-#
-# --------------------------------------------------------------------------------------------------------------------
-# -------- a rejected function ---------------------------------------------------------------------------------------
-# def stringChopper (stringToChop): # a function that slices the string into string displayed on one of the seven lines
-#     j = 0 # a counter used to point to a specific entry in the dictionary
-#     global gameScreenStringDictionary # accessing the global dictionary - function returns implicitly
-#     if len(stringToChop) > 95: # for strings longer than one line
-#         for i in range (0, len(stringToChop),95): # chop to 95 characters max
-#             gameScreenStringDictionary["string{}".format(j)] = stringToChop[i: i+95]
-#             j+=1
-#     elif len(stringToChop) <= 95: # for short strings
-#         gameScreenStringDictionary["string0"] = stringToChop
-# --------------------------------------------------------------------------------------------------------------------
-
-
-
 
 # --------------------------------------------------------------------------------------------------------------------
 def stringChopper (stringToChop, leftChoice, rightChoice): # a function that slices the string into string displayed on one of the seven lines
     j = 0 # a counter used to point to a specific entry in the dictionary
     global gameScreenStringDictionary # accessing the global dictionary - function returns implicitly
+
     if len(stringToChop) > 95: # for strings longer than one line
         gameScreenStringDictionary["left"] = leftChoice
         gameScreenStringDictionary["right"] = rightChoice
@@ -43,7 +29,9 @@ def stringChopper (stringToChop, leftChoice, rightChoice): # a function that sli
 # --------------------------------------------------------------------------------------------------------------------
 
 
-
+def dictionaryCleaner():
+    global gameScreenStringDictionary
+    gameScreenStringDictionary.clear()
 
 
 # ----------------------------------------------------------------------------------------------------------
@@ -55,14 +43,20 @@ testString = " Achilles relents and lends Patroclus his armor, but sends him off
 testLeft = "passing left"
 testRight = "passing right"
 stringChopper(testString, testLeft, testRight)
+testString2 = "chosen left"
+testString3 = "chosen right"
+testLeft2 = "left2"
+testRight2 = "right2"
+# if config.chosenLeft == True:
+#     stringChopper(testString2, testLeft2, testRight2)
+# if config.chosenRight == True:
+#     stringChopper(testString3, testLeft2, testRight2)
 #-----------------------------------------------------------------------------------------------------------
-
-
 
 
 # -----------------------------------------------------------------------------------------------------------
 # passing the chopped strings to the main class
-string0 = gameScreenStringDictionary['string0']                # should the dictionary be cleaned before next screen?
+string0 = gameScreenStringDictionary['string0']
 string1 = gameScreenStringDictionary['string1']
 string2 = gameScreenStringDictionary['string2']
 string3 = gameScreenStringDictionary['string3']
