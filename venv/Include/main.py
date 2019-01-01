@@ -5,7 +5,7 @@ from pygame.locals import *
 
 
 # --------------- TO DO ---------------------------
-# -- add the information button [i] in the main menu and [i] screen after the title card:
+# -- add information to the info screen
 # ---------------------------------- git link
 # ---------------------------------- experimental full screen
 # ---------------------------------- ..............
@@ -41,6 +41,8 @@ halfOfScreenWidth = WINDOWWIDTH / 2  # half of the screen's width (resolution) t
 halfOfScreenHeight = WINDOWHEIGHT / 2  # half of the screen's height (resolution) to calculate the center independently of the resolution
 bottomRightWidth = WINDOWWIDTH * 0.8  # relative position of the "click..." box
 bottomRightHeight = WINDOWHEIGHT * 0.8  # relative position of the "click..." box
+bottomLeftWidth = WINDOWWIDTH * 0.2 # position of the info button
+bottomLefttHeight = WINDOWHEIGHT * 0.8 # position of the info button
 
 gameButtonHeight = WINDOWHEIGHT / 20 # height of the button in the main menu
 gameButtonWidth = WINDOWWIDTH / 5    # width of the button in the main menu
@@ -69,7 +71,7 @@ def gameIntro(goToTheMainMenu=None):  # displays title screen
     intro = True # flag to execute intro
 
     while intro:
-        for event in pygame.event.get():
+        for event in pygame.event.get(): # escape key and closing window exits the program
             if event.type == pygame.QUIT or (event.type == KEYUP and event.key == K_ESCAPE): # ESC exits
                 pygame.quit()
                 sys.exit()
@@ -97,6 +99,33 @@ def gameIntro(goToTheMainMenu=None):  # displays title screen
         FPSCLOCK.tick(FPS) # frame counter tick
 
 
+def infoScreen():
+    info = True # flag to blit the window
+
+    while info:
+        for event in pygame.event.get(): # esc and closing windows exits the program
+            if event.type == pygame.QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+
+        mouseClicked = pygame.mouse.get_pressed() # tracks mouse clicks
+        mousePosition = pygame.mouse.get_pos() # tracks mouse position
+
+        DISPLAYSURF.fill(TITLESCREENCOLOUR)  # screen background
+
+        infoString0 = gameMenuFont.render('info screen', True, GAMETITLECOLOUR, None)  # info
+        infoString0Position = infoString0.get_rect()  # string0 position
+        infoString0Position.center = (halfOfScreenWidth, halfOfScreenHeight / 2)  # centers the box
+        DISPLAYSURF.blit(infoString0, infoString0Position)  # blits
+
+        onScreenButton('Back',xButtonCoordinateCenterScreen, yGearButtonCoordinateGameWindow,
+                       gameButtonWidth, gameButtonHeight, GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,
+                       gameMainMenu, gameMainMenu)  # goes back to the main menu
+
+        pygame.display.update()  # refreshes the screen
+        FPSCLOCK.tick(FPS)  # frame counter tick
+
+
 def gameMainMenu(): # main menu and settings
     mainMenu = True # variable that controls the menu loop
 
@@ -109,18 +138,28 @@ def gameMainMenu(): # main menu and settings
         DISPLAYSURF.fill(TITLESCREENCOLOUR)
 
         onScreenButton('New',  xButtonCoordinateCenterScreen, topMenuButtonHeight, gameButtonWidth, gameButtonHeight,
-                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, gameWindowMain) # calls the button function - newa game
+                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu,
+                       gameWindowMain) # calls the button function - newa game
         onScreenButton('Load', xButtonCoordinateCenterScreen, secondMenuButtonHeight, gameButtonWidth, gameButtonHeight,
-                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - load game
+                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,
+                       gameMainMenu, None)  # calls the button function - load game
         onScreenButton('Save', xButtonCoordinateCenterScreen, thirdMenuButtonHeight, gameButtonWidth, gameButtonHeight,
-                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, None)  # calls the button function - save game
+                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,
+                       gameMainMenu, None)  # calls the button function - save game
         onScreenButton('Quit', xButtonCoordinateCenterScreen, fourthMenuButtonHeight, gameButtonWidth, gameButtonHeight,
-                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, quitQameButton)  # calls the button function - quit
+                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,
+                       gameMainMenu, quitQameButton)  # calls the button function - quit
         onScreenButton('[FS]', bottomRightWidth, bottomRightHeight, gameButtonWidth/4, gameButtonHeight*1.4,
-                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER, gameMainMenu, toggleFullScreen)  # calls the button function - go to full screen
+                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,
+                       gameMainMenu, toggleFullScreen)  # calls the button function - go to full screen
+
+        onScreenButton('[I]', bottomLeftWidth, bottomLefttHeight, gameButtonWidth/4, gameButtonHeight*1.4,
+                       GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,
+                       gameMainMenu, infoScreen)  # calls the button function - quit
 
         optionsButtonGear (xGearButtonCoordinateGameWindow, yGearButtonCoordinateGameWindow, gearButtonWidth,
-                           gearButtonHeight,GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,None) # shifts between menu and gameplay
+                           gearButtonHeight,
+                           GAMETITLECOLOUR, GAMETITLECOLOURBRIGHTER,None) # shifts between menu and gameplay
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
